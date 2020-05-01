@@ -22,3 +22,11 @@ For lack of better terms, "definitions" describes the term-definition-paraphrase
   - Term
   - Initial definition
   - Paraphrases + good/bad judgment
+
+## considerations
+
+- ease of setup - no signup required
+- privacy/anonymity
+- ability to return to conversations/connect up multiple convos?
+- how to have more feedback beyond just "we get it!", without it devolving into arguments?
+  - idea: maybe let the definer highlight some parts of the definition and explicitly mark those as not what they mean?
