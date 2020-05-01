@@ -2,11 +2,11 @@
 
 An implementation of WeGetIt from Karl Schroeder's short story Degrees of Freedom
 
-# terminology
+## terminology
 
 For lack of better terms, "definitions" describes the term-definition-paraphrase portions of WeGetIt, while "conversations" describes the broad collection of definitions.
 
-# pages/flows
+## pages/flows
 
 - Main Page
   - Overview/description of WeGetIt
