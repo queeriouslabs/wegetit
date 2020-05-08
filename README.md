@@ -6,6 +6,13 @@ An implementation of WeGetIt from Karl Schroeder's short story Degrees of Freedo
 
 For lack of better terms, "definitions" describes the term-definition-paraphrase portions of WeGetIt, while "conversations" describes the broad collection of definitions.
 
+### possible terminology improvement
+
+"conversation" might be a bit ambiguous so perhaps "topic" is better?
+
+"term/definition" might lead people to feel ownership over a term, so it might
+better to use something like "perspective" or "interpretation"?
+
 ## page/flow - single-page version
 
 - The Page
