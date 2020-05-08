@@ -6,6 +6,70 @@ An implementation of WeGetIt from Karl Schroeder's short story Degrees of Freedo
 
 For lack of better terms, "definitions" describes the term-definition-paraphrase portions of WeGetIt, while "conversations" describes the broad collection of definitions.
 
+## page/flow - single-page version
+
+- The Page
+  - Overview/description of WeGetIt
+  - List of convos
+    - - for new convo
+    - Entry
+      - UUID anchor
+      - Title
+      - Description
+      - List of definitions
+        - - for new definition
+        - Entry
+          - UUID anchor
+          - Term + UUID indicating which initial definition of the term
+          - Initial definition
+          - List of Paraphrases
+            - - for new paraphrase
+            - Entry
+              - UUID anchor
+              - Yes/No judgment
+              - Paraphrase
+
+### Endpoints / API
+
+- `GET /`
+  Returns:
+  HTML rendering of the main page
+
+- `POST /conversations`
+
+  Parameters:
+
+  - title : String
+  - description : String
+
+  Returns:
+
+  - Redirect to the mainpage with an anchor to #ConversationID for a newly
+    created conversation
+
+- `POST /conversations/:convo_id/definitions`
+
+  Parameters:
+
+  - term : String
+  - initial_definition : String
+
+  Returns:
+
+  - Redirect to the mainpage with an anchor to #DefinitionID for the newly
+    created definition
+
+- `POST /conversations/:convo_id/definitons/:definition_id/paraphrases`
+
+  Parameters:
+
+  - paraphrase : String
+
+  Returns:
+
+  - Redirects to the mainpage with an anchor to #ParaphraseID for the newly
+    created paraphrase
+
 ## pages/flows - minimal version
 
 - Main Page
