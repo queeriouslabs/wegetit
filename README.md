@@ -6,7 +6,23 @@ An implementation of WeGetIt from Karl Schroeder's short story Degrees of Freedo
 
 For lack of better terms, "definitions" describes the term-definition-paraphrase portions of WeGetIt, while "conversations" describes the broad collection of definitions.
 
-## pages/flows
+## pages/flows - minimal version
+
+- Main Page
+  - Overview/description of WeGetIt
+  - List of conversations
+- Create Convo
+  - Title + Description
+- View Convo
+  - Title + Description
+  - List of definitions in this conversation --click--> view definition
+- View Definition
+  - Term
+  - Initial definition
+  - Add your own paraphrase
+  - Other paraphrases + good/bad judgment
+
+## pages/flows - fuller version?
 
 - Main Page
   - Overview/description of WeGetIt
