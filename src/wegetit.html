@@ -20,138 +20,217 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 <html>
   <head>
     <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+      $( function() {
+        $( ".threads" ).accordion({
+          heightStyle: "content"
+        });
+
+        $( ".perspectives" ).accordion({
+          heightStyle: "content"
+        });
+      } );
+    </script>
+
     <link rel="stylesheet" href="style.css">
 
     <title>We Get It</title>
   </head>
   <body>
 
+    <section id="main">
 
+      <!-- heading -->
 
-    <!-- heading -->
+      <h1>WeGetIt</h1>
 
-    <h1>WeGetIt</h1>
+      <p>
+        WeGetIt is an experimental communication platform that strives for shared
+        understanding above all else.
+      </p>
 
-    <p>
-      WeGetIt is an experimental communication platform that strives for shared
-      understanding above all else.
-    </p>
+      <p>
+        Rather than providing a means for completely unrestricted conversations,
+        which are prone to devolving into flame wars and pointless hate, WeGetIt
+        structures conversations around understanding one another's meanings.
+      </p>
 
-    <p>
-      Rather than providing a means for completely unrestricted conversations,
-      which are prone to devolving into flame wars and pointless hate, WeGetIt
-      structures conversations around understanding one another's meanings.
-    </p>
+      <h2>How It Works</h2>
 
-    <h2>How It Works</h2>
+      <p>
+        Below is a list of "threads". Each is a structured conversation, with a
+        name describing it, and a brief detailed overview of the topic under
+        discussion in that thread. You can create a new thread by clicking the
+        text <code>+&nbsp;New&nbsp;Thread</code>.
+      </p>
 
-    <p>
-      Below is a list of "threads". Each is a structured conversation, with a
-      name describing it, and a brief detailed overview of the topic under
-      discussion in that thread. You can create a new thread by clicking the
-      text <code>+&nbsp;New&nbsp;Thread</code>.
-    </p>
+      <p>
+        Within each thread, there are "perspectives", which present a fellow
+        user's way of understanding a word or term of their choosing. Each
+        perspective consists of the word or term, together with the user's
+        personal interpretation of what it means, in their own words. You can add
+        your own perspectives on whatever word you want by clicking the text
+        <code>+&nbsp;New&nbsp;Perspective</code>.
+      </p>
 
-    <p>
-      Within each thread, there are "perspectives", which present a fellow
-      user's way of understanding a word or term of their choosing. Each
-      perspective consists of the word or term, together with the user's
-      personal interpretation of what it means, in their own words. You can add
-      your own perspectives on whatever word you want by clicking the text
-      <code>+&nbsp;New&nbsp;Perspective</code>.
-    </p>
+      <p>
+        Within each perspective, there are "paraphrases", which are other users
+        rewording of the original user's personal interpretation. These
+        paraphrases are supposed to be mere restatements of the original meaning
+        in the perspective. A good way to write a paraphrase would begin with
+        something like "I understand you as saying ...". You can add your own
+        paraphrase on a perspective by clicking the text
+        <code>+&nbsp;New&nbsp;Paraphrase</code>.
+      </p>
 
-    <p>
-      Within each perspective, there are "paraphrases", which are other users
-      rewording of the original user's personal interpretation. These
-      paraphrases are supposed to be mere restatements of the original meaning
-      in the perspective. A good way to write a paraphrase would begin with
-      something like "I understand you as saying ...". You can add your own
-      paraphrase on a perspective by clicking the text
-      <code>+&nbsp;New&nbsp;Paraphrase</code>.
-    </p>
+      <p>
+        Each paraphrase can be rated by the original author of the perspective
+        that's being paraphrased. The ratings are either "Not Quite", which
+        indicates that the paraphrase isn't exactly what the original author
+        meant, or "We Get It!", which means that the original author things that
+        the paraphrase is a good paraphrase of their meaning. These ratings will
+        show up next to the paraphrases once they are given by the original
+        author.
+      </p>
 
-    <p>
-      Each paraphrase can be rated by the original author of the perspective
-      that's being paraphrased. The ratings are either "Not Quite", which
-      indicates that the paraphrase isn't exactly what the original author
-      meant, or "We Get It!", which means that the original author things that
-      the paraphrase is a good paraphrase of their meaning. These ratings will
-      show up next to the paraphrases once they are given by the original
-      author.
-    </p>
-
-    <p>
-      All parts of this are anonymous and unlinked. A browser cookie is used to
-      allow you to be identified to the server as the author of particular
-      threads, perspectives, and paraphrases, but no login or username is
-      required, and if you clear your browser cookies, the server will no longer
-      know who you are.  These conversations are meant to be anonymous, and we
-      don't want people to fight with one another offline over the particular
-      meanings or paraphrases. Rather, we want people to understand each other,
-      first and foremost.
-    </p>
-
-
-
-    <!-- threads -->
-
-    <h2>Threads</h2>
-
-    <ol class="threads">
-      <li class="new_link"><a href="#">+ New Thread</a></li>
-      <li class="thread">
-        <p><strong>Thread Title</strong></p>
-        <p>
-          Thread description.
-        </p>
-        <ol class="perspectives">
-          <li class="new_link"><a href="#">+ New Perspective</a></li>
-          <li class="perspective">
-            <p><em>Term:</em> A Defined Term</p>
-            <p><em>Interpretation:</em> An interpretation of the term.</p>
-            <ol class="paraphrases">
-              <li class="new_link"><a href="#">+ New Paraphrase</a></li>
-              <li class="paraphrase">
-                <p class="paraphrase_content">A paraphrase of the interpretation.</p>
-                <p class="rating">No Rating Yet</p>
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </li>
-    </ol>
+      <p>
+        All parts of this are anonymous and unlinked. A browser cookie is used to
+        allow you to be identified to the server as the author of particular
+        threads, perspectives, and paraphrases, but no login or username is
+        required, and if you clear your browser cookies, the server will no longer
+        know who you are.  These conversations are meant to be anonymous, and we
+        don't want people to fight with one another offline over the particular
+        meanings or paraphrases. Rather, we want people to understand each other,
+        first and foremost.
+      </p>
 
 
 
-    <!-- footer -->
+      <!-- threads -->
 
-    <h2>Origins</h2>
+      <h2>Threads</h2>
 
-    <p>
-      WeGetIt is a program originally envisioned in Karl Schroeder's short story
-      <em>Degrees of Freedom</em>, in the <em>Hieroglyph</em> anthology. It's
-      intended to form an integral part of a future political system that is
-      more just and fair. It fits in well with the general theme of Hieroglyph
-      as a collection of science fiction stories that inspire people to work on
-      and build a better tomorrow.
-    </p>
+      <p class="new_link"><a href="#">+ New Thread</a></p>
+      <div class="threads">
 
-    <p>
-      We build WeGetIt precisely because we yearn to build a better tomorrow,
-      and were inspired by Schroeder's story. We don't know if WeGetIt can, or
-      will, have the same importance in the real world as it did in his story,
-      but we believe that it's important to explore and experiment with these
-      things. If no one builds the better tomorrow, then we can't expect it to
-      arrive.
-    </p>
+        <h3>Thread Title 1</h3>
+        <div class="thread">
+          <p>
+            Thread description.
+          </p>
 
-    <h2>Copyright Info</h2>
+          <p class="new_link"><a href="#">+ New Perspective</a></p>
+          <div class="perspectives">
 
-    <p>
-      We want people to build and expand on this, so we offer WeGetIt to the
-      world as free software, licensed under AGPLv3.
-    </p>
+            <h3><em>Term:</em> Defined Term 1</h3>
+            <div class="perspective">
+              <p><em>Interpretation:</em> An interpretation of the term.</p>
+
+              <p class="new_link"><a href="#">+ New Paraphrase</a></p>
+
+              <ol class="paraphrases">
+                <li class="paraphrase">
+                  <p class="paraphrase_content">A paraphrase of the interpretation.</p>
+                  <p class="rating">No Rating Yet</p>
+                </li>
+              </ol>
+            </div>
+
+            <h3><em>Term:</em> Defined Term 2</h3>
+            <div class="perspective">
+              <p><em>Interpretation:</em> An interpretation of the term.</p>
+
+              <p class="new_link"><a href="#">+ New Paraphrase</a></p>
+
+              <ol class="paraphrases">
+                <li class="paraphrase">
+                  <p class="paraphrase_content">A paraphrase of the interpretation.</p>
+                  <p class="rating">No Rating Yet</p>
+                </li>
+              </ol>
+            </div>
+
+          </div>
+        </div>
+
+        <h3>Thread Title 2</h3>
+        <div class="thread">
+          <p>
+            Thread description.
+          </p>
+
+          <p class="new_link"><a href="#">+ New Perspective</a></p>
+          <div class="perspectives">
+
+            <h3><em>Term:</em> Defined Term 1</h3>
+            <div class="perspective">
+              <p><em>Interpretation:</em> An interpretation of the term.</p>
+
+              <p class="new_link"><a href="#">+ New Paraphrase</a></p>
+
+              <ol class="paraphrases">
+                <li class="paraphrase">
+                  <p class="paraphrase_content">A paraphrase of the interpretation.</p>
+                  <p class="rating">No Rating Yet</p>
+                </li>
+              </ol>
+            </div>
+
+            <h3><em>Term:</em> Defined Term 2</h3>
+            <div class="perspective">
+              <p><em>Interpretation:</em> An interpretation of the term.</p>
+
+              <p class="new_link"><a href="#">+ New Paraphrase</a></p>
+
+              <ol class="paraphrases">
+                <li class="paraphrase">
+                  <p class="paraphrase_content">A paraphrase of the interpretation.</p>
+                  <p class="rating">No Rating Yet</p>
+                </li>
+              </ol>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <!-- footer -->
+
+      <h2>Origins</h2>
+
+      <p>
+        WeGetIt is a program originally envisioned in Karl Schroeder's short story
+        <em>Degrees of Freedom</em>, in the <em>Hieroglyph</em> anthology. It's
+        intended to form an integral part of a future political system that is
+        more just and fair. It fits in well with the general theme of Hieroglyph
+        as a collection of science fiction stories that inspire people to work on
+        and build a better tomorrow.
+      </p>
+
+      <p>
+        We build WeGetIt precisely because we yearn to build a better tomorrow,
+        and were inspired by Schroeder's story. We don't know if WeGetIt can, or
+        will, have the same importance in the real world as it did in his story,
+        but we believe that it's important to explore and experiment with these
+        things. If no one builds the better tomorrow, then we can't expect it to
+        arrive.
+      </p>
+
+      <h2>Copyright Info</h2>
+
+      <p>
+        We want people to build and expand on this, so we offer WeGetIt to the
+        world as free software, licensed under AGPLv3.
+      </p>
+
+    </section>
 
   </body>
 </html>

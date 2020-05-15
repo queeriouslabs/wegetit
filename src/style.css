@@ -16,12 +16,41 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+* {
+  font-family: monospace;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#main {
+  width: 750px;
+}
+
+h1 {
+  font-size: 30pt;
+}
+
+h2 {
+  font-size: 20pt;
+  margin-top: 2em;
+}
+
 code {
     font-weight: 600;
 }
 
 .threads, .perspectives, .paraphrases {
   list-style-type: none;
+  padding-left: 15px;
+}
+
+.ui-accordion-header.ui-state-active {
+  background-color: #69b4ff;
+  border-color: #69b4ff;
 }
 
 .rating {
