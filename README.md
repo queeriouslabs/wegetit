@@ -42,7 +42,7 @@ better to use something like "perspective" or "interpretation"?
   Returns:
   HTML rendering of the main page
 
-- `POST /conversations`
+- `POST /threads`
 
   Parameters:
 
@@ -51,22 +51,22 @@ better to use something like "perspective" or "interpretation"?
 
   Returns:
 
-  - Redirect to the mainpage with an anchor to #ConversationID for a newly
-    created conversation
+  - Redirect to the mainpage with an anchor to #ThreadID for a newly
+    created thread
 
-- `POST /conversations/:convo_id/definitions`
+- `POST /threads/:convo_id/perspectives`
 
   Parameters:
 
   - term : String
-  - initial_definition : String
+  - initial_interpretation : String
 
   Returns:
 
-  - Redirect to the mainpage with an anchor to #DefinitionID for the newly
-    created definition
+  - Redirect to the mainpage with an anchor to #PerspectiveID for the newly
+    created perspective
 
-- `POST /conversations/:convo_id/definitons/:definition_id/paraphrases`
+- `POST /threads/:convo_id/perspectives/:perspective_id/paraphrases`
 
   Parameters:
 
