@@ -54,7 +54,7 @@ better to use something like "perspective" or "interpretation"?
   - Redirect to the mainpage with an anchor to #ThreadID for a newly
     created thread
 
-- `POST /threads/:convo_id/perspectives`
+- `POST /threads/:thread_id/perspectives`
 
   Parameters:
 
@@ -66,7 +66,7 @@ better to use something like "perspective" or "interpretation"?
   - Redirect to the mainpage with an anchor to #PerspectiveID for the newly
     created perspective
 
-- `POST /threads/:convo_id/perspectives/:perspective_id/paraphrases`
+- `POST /threads/:thread_id/perspectives/:perspective_id/paraphrases`
 
   Parameters:
 
