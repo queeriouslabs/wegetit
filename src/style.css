@@ -28,6 +28,7 @@ body {
 
 #main {
   width: 750px;
+  padding-bottom: 5em;
 }
 
 h1 {
@@ -48,9 +49,22 @@ code {
   padding-left: 15px;
 }
 
+.ui-accordion {
+  padding-left: 0;
+}
+
+.ui-accordion-header.ui-state-active, .ui-accordion-header.ui-state-inactive, .ui-accordion-header-collapsed, .ui-accordion-header-collapsed.ui-state-default {
+  color: black;
+  font-weight: 600;
+}
+
 .ui-accordion-header.ui-state-active {
-  background-color: #69b4ff;
-  border-color: #69b4ff;
+  background-color: #ff69b4;
+  border-color: #ff69b4;
+}
+
+.new_link {
+  font-size: 10pt;
 }
 
 .rating {
