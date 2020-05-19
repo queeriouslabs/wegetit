@@ -37,6 +37,74 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
           collapsible: true,
           icons: false
         });
+
+        function submit_new_thread() {
+          var form = $("#new_thread_form");
+          form.attr("action", "threads");
+          form.submit();
+        }
+
+        var new_thread_dialog = $("#new_thread_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_thread
+          }
+        });
+
+        $(".new_thread").on("click", function (ev) {
+          new_thread_dialog.dialog("open");
+          ev.preventDefault();
+        })
+
+        var focus_thread = null;
+        function submit_new_perspective() {
+          var form = $("#new_perspective_form");
+          form.attr("action", "threads/" + focus_thread.toString() + "/perspectives");
+          form.submit();
+        }
+
+        var new_perspective_dialog = $("#new_perspective_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_perspective
+          }
+        });
+
+        $(".new_perspective").on("click", function (ev) {
+          focus_thread = ev.target.dataset.thread;
+          new_perspective_dialog.dialog("open");
+          ev.preventDefault();
+        })
+
+        var focus_perspective = null
+        function submit_new_paraphrase() {
+          var form = $("#new_paraphrase_form");
+          form.attr("action", "threads/" + focus_perspective.thread.toString() + "/perspectives/" + focus_perspective.perspective.toString() + "/paraphrases");
+          form.submit();
+        }
+
+        var new_paraphrase_dialog = $("#new_paraphrase_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_paraphrase
+          }
+        });
+
+        $(".new_paraphrase").on("click", function (ev) {
+          focus_perspective = {
+            thread: ev.target.dataset.thread,
+            perspective: ev.target.dataset.perspective
+          };
+          new_paraphrase_dialog.dialog("open");
+          ev.preventDefault();
+        });
+
       } );
     </script>
 
@@ -145,23 +213,60 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
       <h2>Threads</h2>
 
-      <p class="new_link"><a href="#">+ New Thread</a></p>
+      <div id="new_thread_dialog" title="Create new thread">
+        <form id="new_thread_form" method="POST">
+          <p>
+            <label for="thread_title">Thread Title</label>
+            <input type="text" name="thread_title" id="thread_title" />
+          </p>
+
+          <p>
+            <label for="thread_description">Thread Description</label><br/>
+            <textarea id="thread_description" rows="6" cols="50"></textarea>
+          </p>
+        </form>
+      </div>
+
+      <div id="new_perspective_dialog" title="Create new perspective">
+        <form id="new_perspective_form" method="POST">
+          <p>
+            <label for="perspective_term">What term would you like to provide an interpretation of?</label>
+            <input type="text" name="perspective_term" id="perspective_term" />
+          </p>
+
+          <p>
+            <label for="perspective_interpretation">How do you interpret the meaning of this term?</label><br/>
+            <textarea id="perspective_interpretation" rows="6" cols="50"></textarea>
+          </p>
+        </form>
+      </div>
+
+      <div id="new_paraphrase_dialog" title="Create new paraphrase">
+        <form id="new_paraphrase_form" method="POST">
+          <p>
+            <label for="paraphrase">How would you paraphrase the original author's interpretation of this term?</label><br/>
+            <textarea id="paraphrase" rows="6" cols="50"></textarea>
+          </p>
+        </form>
+      </div>
+
+      <p><a href="#" class="new_link new_thread">+ New Thread</a></p>
       <div class="threads">
 
         <h3>Thread Title 1</h3>
-        <div class="thread">
+        <div class="thread" id="thread_1">
           <p>
             Thread description.
           </p>
 
-          <p class="new_link"><a href="#">+ New Perspective</a></p>
+          <p><a href="#" class="new_link new_perspective" data-thread="1">+ New Perspective</a></p>
           <div class="perspectives">
 
             <h3><em>Term:</em> Defined Term 1</h3>
             <div class="perspective">
               <p><em>Interpretation:</em> An interpretation of the term.</p>
 
-              <p class="new_link"><a href="#">+ New Paraphrase</a></p>
+              <p><a href="#" class="new_link new_paraphrase" data-thread="1" data-perspective="1">+ New Paraphrase</a></p>
 
               <ol class="paraphrases">
                 <li class="paraphrase">
@@ -175,7 +280,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
             <div class="perspective">
               <p><em>Interpretation:</em> An interpretation of the term.</p>
 
-              <p class="new_link"><a href="#">+ New Paraphrase</a></p>
+              <p><a href="#" class="new_link new_paraphrase" data-thread="1" data-perspective="2">+ New Paraphrase</a></p>
 
               <ol class="paraphrases">
                 <li class="paraphrase">
@@ -189,19 +294,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
         </div>
 
         <h3>Thread Title 2</h3>
-        <div class="thread">
+        <div class="thread" id="thread_2">
           <p>
             Thread description.
           </p>
 
-          <p class="new_link"><a href="#">+ New Perspective</a></p>
+          <p><a href="#" class="new_link new_perspective" data-thread="2">+ New Perspective</a></p>
           <div class="perspectives">
 
             <h3><em>Term:</em> Defined Term 1</h3>
             <div class="perspective">
               <p><em>Interpretation:</em> An interpretation of the term.</p>
 
-              <p class="new_link"><a href="#">+ New Paraphrase</a></p>
+              <p><a href="#" class="new_link new_paraphrase" data-thread="2" data-perspective="1">+ New Paraphrase</a></p>
 
               <ol class="paraphrases">
                 <li class="paraphrase">
@@ -215,7 +320,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
             <div class="perspective">
               <p><em>Interpretation:</em> An interpretation of the term.</p>
 
-              <p class="new_link"><a href="#">+ New Paraphrase</a></p>
+              <p><a href="#" class="new_link new_paraphrase" data-thread="2" data-perspective="2">+ New Paraphrase</a></p>
 
               <ol class="paraphrases">
                 <li class="paraphrase">
