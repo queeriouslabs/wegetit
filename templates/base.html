@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+      $( function() {
+        $( ".threads" ).accordion({
+          heightStyle: "content",
+          collapsible: true,
+          icons: false
+        });
+
+        $( ".perspectives" ).accordion({
+          heightStyle: "content",
+          collapsible: true,
+          icons: false
+        });
+
+        function submit_new_thread() {
+          var form = $("#new_thread_form");
+          form.attr("action", "threads");
+          form.submit();
+        }
+
+        var new_thread_dialog = $("#new_thread_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_thread
+          }
+        });
+
+        $(".new_thread").on("click", function (ev) {
+          new_thread_dialog.dialog("open");
+          ev.preventDefault();
+        })
+
+        var focus_thread = null;
+        function submit_new_perspective() {
+          var form = $("#new_perspective_form");
+          form.attr("action", "threads/" + focus_thread.toString() + "/perspectives");
+          form.submit();
+        }
+
+        var new_perspective_dialog = $("#new_perspective_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_perspective
+          }
+        });
+
+        $(".new_perspective").on("click", function (ev) {
+          focus_thread = ev.target.dataset.thread;
+          new_perspective_dialog.dialog("open");
+          ev.preventDefault();
+        })
+
+        var focus_perspective = null
+        function submit_new_paraphrase() {
+          var form = $("#new_paraphrase_form");
+          form.attr("action", "threads/" + focus_perspective.thread.toString() + "/perspectives/" + focus_perspective.perspective.toString() + "/paraphrases");
+          form.submit();
+        }
+
+        var new_paraphrase_dialog = $("#new_paraphrase_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_paraphrase
+          }
+        });
+
+        $(".new_paraphrase").on("click", function (ev) {
+          focus_perspective = {
+            thread: ev.target.dataset.thread,
+            perspective: ev.target.dataset.perspective
+          };
+          new_paraphrase_dialog.dialog("open");
+          ev.preventDefault();
+        });
+
+      } );
+    </script>
+
+
+    <title>We Get It</title>
+  </head>
+<title>{% block title %}{% endblock %} - WeGetIt</title>
+<nav>
+  <h1>WeGetIt</h1>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
+</html>

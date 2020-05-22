@@ -24,7 +24,7 @@ def init_db():
 
 # threads: {"id": UID, "title" : String, "description" : String},
     table = db.table('threads')
-    table.insert({'id': True, 'title': True, 'description': True})
+    table.insert({'title': True, 'description': True})
     for row in table:
         print(row)
 
@@ -36,7 +36,7 @@ def init_db():
 
 # paraphrases: {"thread_id": FK_threads-id, "paraphrase" : String}
     table = db.table('paraphrases')
-    table.insert({'thread_id': True, 'paraphrase': True})
+    table.insert({'perspective_id': True, 'paraphrase': True})
     for row in table:
         print(row)
 
