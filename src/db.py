@@ -9,8 +9,10 @@ import re
 def get_db():
     return TinyDB('db.json')
 
+
 def close_db(db):
     db.close()
+
 
 def init_db():
     db = get_db()
@@ -28,7 +30,7 @@ def init_db():
 # perspectives: {"thread_id": FK_threads-id, "term" : String, "initial_interpretation" : String},
     table = db.table('perspectives')
     table.insert({'thread_id': True, 'term': True,
-                  'perspective_interpretation': True})
+                  'initial_interpretation': True})
     for row in table:
         print(row)
 

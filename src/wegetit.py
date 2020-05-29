@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config.from_mapping(
     SECRET_KEY='dev',
     DATABASE=os.path.join(app.instance_path, 'wegetit.tinydb'),
-    )
+)
 app.config['DEBUG'] = True
 app.config['TESTING'] = True
 
@@ -19,7 +19,6 @@ ROOT_DIR = app.root_path
 def root():
     the_db = db.get_db()
     threads = []
-
     for thread_row in the_db.table('threads').all():
 
         thread = {
@@ -27,7 +26,7 @@ def root():
             'description': thread_row['description'],
             'perspectives': []
         }
-        threads.append(thread_row)
+        threads.append(thread)
 
         for perspective_row in the_db.table('perspectives').search(Query().thread_id == thread_row.doc_id):
             perspective = {
@@ -48,7 +47,6 @@ def root():
 
 
 @app.route('/threads', methods=['GET', 'POST'])
-
 def post_thread():
     # insert new thread into DB, making a new id
     the_db = db.get_db()
@@ -64,14 +62,16 @@ def post_thread():
         if error is not None:
             return(error)
         else:
-            table.insert({'title': thread_title, 'description': thread_description})
-    return render_template('wegetit.html', threads=table) #redirect(url_for('.threads'))
+            table.insert(
+                {'title': thread_title, 'description': thread_description})
+    # redirect(url_for('.threads'))
+    return render_template('wegetit.html', threads=table)
 
     # TO DO: redirect to #thread_<id>
     # May need to add the following to the html: <script> $(function(){ window.location.hash = "jump_here"; }); </script>
 
 
-@app.route('/threads/<thread_id>/perspectives', methods=['POST'])
+@app.route('/threads/<int:thread_id>/perspectives', methods=['POST'])
 def post_perspective(thread_id):
     # print(thread_id)
     the_db = db.get_db()
@@ -80,7 +80,8 @@ def post_perspective(thread_id):
     #thread_id = "thread_%s" % threads[doc_id]
     if request.method == 'POST':
         perspective_term = request.form.get('perspective_term')
-        perspective_interpretation = request.form.get('perspective_interpretation')
+        initial_interpretation = request.form.get(
+            'initial_interpretation')
         error = None
         if not perspective_term:
             error = 'Term is required.'
@@ -89,9 +90,11 @@ def post_perspective(thread_id):
         if error is not None:
             return(error)
         else:
-            table.insert({'thread_id': thread_id, 'term': perspective_term, 'perspective_interpretation': perspective_interpretation})
+            table.insert({'thread_id': thread_id, 'term': perspective_term,
+                          'initial_interpretation': initial_interpretation})
 
-    return render_template('wegetit.html', threads=threads) #redirect(url_for('perspectives'))
+    # redirect(url_for('perspectives'))
+    return render_template('wegetit.html', threads=threads)
     # insert a new perspective into the DB, making a new id, and redirect to
     # #thread_<thread_id>_perspective_<id>
 
