@@ -1,135 +1,107 @@
-<!--
-WeGetIt - A tool for achieving shared understanding
-Copyright (C) 2020 Queerious Labs
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
+<!-- WeGetIt - A tool for achieving shared understanding Copyright (C) 2020 Queerious Labs This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>. -->
 
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-      $( function() {
-        $( ".threads" ).accordion({
-                heightStyle: "content",
-                collapsible: true,
-                icons: false
-              });
+      $(function () {
+        $(".threads").accordion({heightStyle: "content", collapsible: true, icons: false});
 
-              function submit_new_thread() {
-                var form = $("#new_thread_form");
-                form.attr("action", "threads");
-                form.submit();
-              }
+        function submit_new_thread() {
+          var form = $("#new_thread_form");
+          form.attr("action", "threads");
+          form.submit();
+        }
 
-              var new_thread_dialog = $("#new_thread_dialog").dialog({
-                autoOpen: false,
-                modal: true,
-                width: 500,
-                buttons: {
-                  "Submit": submit_new_thread
-                }
-              });
+        var new_thread_dialog = $("#new_thread_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_thread
+          }
+        });
 
-              $(".new_thread").on("click", function (ev) {
-                new_thread_dialog.dialog("open");
-                ev.preventDefault();
-              })
+        $(".new_thread").on("click", function (ev) {
+          new_thread_dialog.dialog("open");
+          ev.preventDefault();
+        })
 
+        $(".perspectives").accordion({heightStyle: "content", collapsible: true, icons: false});
 
+        var focus_thread = null;
+        function submit_new_perspective() {
+          var form = $("#new_perspective_form");
+          form.attr("action", "threads/" + focus_thread.toString() + "/perspectives");
+          form.submit();
+        }
 
-              $( ".perspectives" ).accordion({
-                heightStyle: "content",
-                collapsible: true,
-                icons: false
-              });
+        var new_perspective_dialog = $("#new_perspective_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_perspective
+          }
+        });
 
-              var focus_thread = null;
-              function submit_new_perspective() {
-                var form = $("#new_perspective_form");
-                form.attr("action", "threads/" + focus_thread.toString() + "/perspectives");
-                form.submit();
-              }
+        $(".new_perspective").on("click", function (ev) {
+          focus_thread = ev.target.dataset.thread;
+          new_perspective_dialog.dialog("open");
+          ev.preventDefault();
+        })
 
-              var new_perspective_dialog = $("#new_perspective_dialog").dialog({
-                autoOpen: false,
-                modal: true,
-                width: 500,
-                buttons: {
-                  "Submit": submit_new_perspective
-                }
-              });
+        var focus_perspective = null
+        function submit_new_paraphrase() {
+          var form = $("#new_paraphrase_form");
+          form.attr("action", "threads/" + focus_perspective.thread.toString() + "/perspectives/" + focus_perspective.perspective.toString() + "/paraphrases");
+          form.submit();
+        }
 
-              $(".new_perspective").on("click", function (ev) {
-                focus_thread = ev.target.dataset.thread;
-                new_perspective_dialog.dialog("open");
-                ev.preventDefault();
-              })
+        var new_paraphrase_dialog = $("#new_paraphrase_dialog").dialog({
+          autoOpen: false,
+          modal: true,
+          width: 500,
+          buttons: {
+            "Submit": submit_new_paraphrase
+          }
+        });
 
+        $(".new_paraphrase").on("click", function (ev) {
+          focus_perspective = {
+            thread: ev.target.dataset.thread,
+            perspective: ev.target.dataset.perspective
+          };
+          new_paraphrase_dialog.dialog("open");
+          ev.preventDefault();
+        });
 
+        var hash = window.location.hash;
 
-              var focus_perspective = null
-              function submit_new_paraphrase() {
-                var form = $("#new_paraphrase_form");
-                form.attr("action", "threads/" + focus_perspective.thread.toString() + "/perspectives/" + focus_perspective.perspective.toString() + "/paraphrases");
-                form.submit();
-              }
+        if (hash.match(/^#thread_\d+$/)) {
+          const thread_index = $('.threads').children('h3').index($("h3[id='" + hash.substr(1) + "']"));
+          $(".threads").accordion({active: thread_index});
+        } else {
+          var m = hash.match(/^#((thread_\d+)_perspective_\d+)(_paraphrase_\d+)?$/);
+          if (m) {
 
-              var new_paraphrase_dialog = $("#new_paraphrase_dialog").dialog({
-                autoOpen: false,
-                modal: true,
-                width: 500,
-                buttons: {
-                  "Submit": submit_new_paraphrase
-                }
-              });
+            const thread_index = $('.threads').children('h3').index($("h3[id='" + m[2] + "']"));
+            $(".threads").accordion({active: thread_index});
 
-              $(".new_paraphrase").on("click", function (ev) {
-                focus_perspective = {
-                  thread: ev.target.dataset.thread,
-                  perspective: ev.target.dataset.perspective
-                };
-                new_paraphrase_dialog.dialog("open");
-                ev.preventDefault();
-              });
-
-
-
-              var hash = window.location.hash;
-
-              if (hash.match(/^#thread_\d+$/)) {
-                const thread_index = $('.threads').children('h3').index( $("h3[id='" + hash.substr(1) + "']") );
-                $( ".threads" ).accordion({ active: thread_index });
-              } else {
-                var m = hash.match(/^#((thread_\d+)_perspective_\d+)(_paraphrase_\d+)?$/);
-                if (m) {
-
-                  const thread_index = $('.threads').children('h3').index( $("h3[id='" + m[2] + "']") );
-                  $( ".threads" ).accordion({ active: thread_index });
-
-                  const perspective_index = $('.perspectives').children('h3').index( $("h3[id='" + m[1] + "']") );
-                  $( ".perspectives" ).accordion({ active: perspective_index });
-                }
-              }
-            } );
-          </script>
+            const perspective_index = $('.perspectives').children('h3').index($("h3[id='" + m[1] + "']"));
+            $(".perspectives").accordion({active: perspective_index});
+          }
+        }
+      });
+    </script>
 
     <title>We Get It</title>
   </head>
@@ -142,178 +114,156 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
       <h1>WeGetIt</h1>
 
       <p>
-        WeGetIt is an experimental communication platform that strives for shared
-        understanding above all else.
+        WeGetIt is an experimental communication platform that strives for shared understanding above all else.
       </p>
 
       <p>
-        Rather than providing a means for completely unrestricted conversations,
-        which are prone to devolving into flame wars and pointless hate, WeGetIt
-        structures conversations around understanding one another's meanings.
+        Rather than providing a means for completely unrestricted conversations, which are prone to devolving into flame wars and pointless hate, WeGetIt structures conversations around understanding one another's meanings.
       </p>
 
       <h2>How It Works</h2>
 
       <p>
-        Below is a list of "threads". Each is a structured conversation, with a
-        name describing it, and a brief detailed overview of the topic under
-        discussion in that thread. You can create a new thread by clicking the
-        text <code>+&nbsp;New&nbsp;Thread</code>.
+        Below is a list of "threads". Each is a structured conversation, with a name describing it, and a brief detailed overview of the topic under discussion in that thread. You can create a new thread by clicking the text
+        <code>+&nbsp;New&nbsp;Thread</code>.
       </p>
 
       <p>
-        Within each thread, there are "perspectives", which present a fellow
-        user's way of understanding a word or term of their choosing. Each
-        perspective consists of the word or term, together with the user's
-        personal interpretation of what it means, in their own words. You can add
-        your own perspectives on whatever word you want by clicking the text
+        Within each thread, there are "perspectives", which present a fellow user's way of understanding a word or term of their choosing. Each perspective consists of the word or term, together with the user's personal interpretation of what it means, in
+        their own words. You can add your own perspectives on whatever word you want by clicking the text
         <code>+&nbsp;New&nbsp;Perspective</code>.
       </p>
 
       <p>
-        Within each perspective, there are "paraphrases", which are other users
-        rewording of the original user's personal interpretation. These
-        paraphrases are supposed to be mere restatements of the original meaning
-        in the perspective. A good way to write a paraphrase would begin with
-        something like "I understand you as saying ...". You can add your own
-        paraphrase on a perspective by clicking the text
+        Within each perspective, there are "paraphrases", which are other users rewording of the original user's personal interpretation. These paraphrases are supposed to be mere restatements of the original meaning in the perspective. A good way to write a
+        paraphrase would begin with something like "I understand you as saying ...". You can add your own paraphrase on a perspective by clicking the text
         <code>+&nbsp;New&nbsp;Paraphrase</code>.
       </p>
 
       <p>
-        Each paraphrase can be rated by the original author of the perspective
-        that's being paraphrased. The ratings are either "Not Quite", which
-        indicates that the paraphrase isn't exactly what the original author
-        meant, or "We Get It!", which means that the original author things that
-        the paraphrase is a good paraphrase of their meaning. These ratings will
-        show up next to the paraphrases once they are given by the original
-        author.
+        Each paraphrase can be rated by the original author of the perspective that's being paraphrased. The ratings are either "Not Quite", which indicates that the paraphrase isn't exactly what the original author meant, or "We Get It!", which means that
+        the original author things that the paraphrase is a good paraphrase of their meaning. These ratings will show up next to the paraphrases once they are given by the original author.
       </p>
 
       <p>
-        All parts of this are anonymous and unlinked. A browser cookie is used to
-        allow you to be identified to the server as the author of particular
-        threads, perspectives, and paraphrases, but no login or username is
-        required, and if you clear your browser cookies, the server will no longer
-        know who you are.  These conversations are meant to be anonymous, and we
-        don't want people to fight with one another offline over the particular
-        meanings or paraphrases. Rather, we want people to understand each other,
-        first and foremost.
+        All parts of this are anonymous and unlinked. A browser cookie is used to allow you to be identified to the server as the author of particular threads, perspectives, and paraphrases, but no login or username is required, and if you clear your browser
+        cookies, the server will no longer know who you are. These conversations are meant to be anonymous, and we don't want people to fight with one another offline over the particular meanings or paraphrases. Rather, we want people to understand each
+        other, first and foremost.
       </p>
 
       <h2>Origins</h2>
 
       <p>
         WeGetIt is a program originally envisioned in Karl Schroeder's short story
-        <em>Degrees of Freedom</em>, in the <em>Hieroglyph</em> anthology. It's
-        intended to form an integral part of a future political system that is
-        more just and fair. It fits in well with the general theme of Hieroglyph
-        as a collection of science fiction stories that inspire people to work on
-        and build a better tomorrow.
+        <em>Degrees of Freedom</em>, in the
+        <em>Hieroglyph</em>
+        anthology. It's intended to form an integral part of a future political system that is more just and fair. It fits in well with the general theme of Hieroglyph as a collection of science fiction stories that inspire people to work on and build a
+        better tomorrow.
       </p>
 
       <p>
-        We build WeGetIt precisely because we yearn to build a better tomorrow,
-        and were inspired by Schroeder's story. We don't know if WeGetIt can, or
-        will, have the same importance in the real world as it did in his story,
-        but we believe that it's important to explore and experiment with these
-        things. If no one builds the better tomorrow, then we can't expect it to
-        arrive.
+        We build WeGetIt precisely because we yearn to build a better tomorrow, and were inspired by Schroeder's story. We don't know if WeGetIt can, or will, have the same importance in the real world as it did in his story, but we believe that it's
+        important to explore and experiment with these things. If no one builds the better tomorrow, then we can't expect it to arrive.
       </p>
 
       <h2>Copyright Info</h2>
 
       <p>
-        We want people to build and expand on this, so we offer WeGetIt to the
-        world as free software, licensed under AGPLv3.
+        We want people to build and expand on this, so we offer WeGetIt to the world as free software, licensed under AGPLv3.
       </p>
 
+      <!-- threads -->
 
+      <h2 id="threads">Threads</h2>
 
-            <!-- threads -->
+      <div id="new_thread_dialog" title="Create new thread">
+        <form id="new_thread_form" method="POST">
+          <p>
+            <label for="thread_title">Thread Title</label>
+            <input type="text" name="thread_title" id="thread_title"/>
+          </p>
 
-            <h2 id ="threads">Threads</h2>
+          <p>
+            <label for="thread_description">Thread Description</label><br/>
+            <textarea name="thread_description" id="thread_description" rows="6" cols="50"></textarea>
+          </p>
+        </form>
+      </div>
 
-            <div id="new_thread_dialog" title="Create new thread">
-              <form id="new_thread_form" method="POST">
-                <p>
-                  <label for="thread_title">Thread Title</label>
-                  <input type="text" name="thread_title" id="thread_title" />
-                </p>
+      <div id="new_perspective_dialog" title="Create new perspective">
+        <form id="new_perspective_form" method="POST">
+          <p>
+            <label for="perspective_term">What term would you like to provide an interpretation of?</label>
+            <input type="text" name="perspective_term" id="perspective_term"/>
+          </p>
 
-                <p>
-                  <label for="thread_description">Thread Description</label><br />
-                  <textarea name="thread_description" id="thread_description" rows="6" cols="50"></textarea>
-                </p>
-              </form>
-            </div>
+          <p>
+            <label for="initial_interpretation">How do you interpret the meaning of this term?</label><br/>
+            <textarea id="initial_interpretation" name="initial_interpretation" rows="6" cols="50"></textarea>
+          </p>
+        </form>
+      </div>
 
-            <div id="new_perspective_dialog" title="Create new perspective">
-              <form id="new_perspective_form" method="POST">
-                <p>
-                  <label for="perspective_term">What term would you like to provide an interpretation of?</label>
-                  <input type="text" name="perspective_term" id="perspective_term" />
-                </p>
+      <div id="new_paraphrase_dialog" title="Create new paraphrase">
+        <form id="new_paraphrase_form" method="POST">
+          <p>
+            <label for="paraphrase">How would you paraphrase the original author's interpretation of this term?</label><br/>
+            <textarea id="paraphrase" name="paraphrase" rows="6" cols="50"></textarea>
+          </p>
+        </form>
+      </div>
 
-                <p>
-                  <label for="initial_interpretation">How do you interpret the meaning of this term?</label><br />
-                  <textarea id="initial_interpretation" name="initial_interpretation" rows="6" cols="50"></textarea>
-                </p>
-              </form>
-            </div>
+      <p>
+        <a href="#" class="new_link new_thread">+ New Thread</a>
+      </p>
+      <div class="threads">
 
-            <div id="new_paraphrase_dialog" title="Create new paraphrase">
-              <form id="new_paraphrase_form" method="POST">
-                <p>
-                  <label for="paraphrase">How would you paraphrase the original author's interpretation of this term?</label><br />
-                  <textarea id="paraphrase" name="paraphrase" rows="6" cols="50"></textarea>
-                </p>
-              </form>
-            </div>
+        {% for thread in threads %}
+          <h3 id="thread_{{ thread['id'] }}">{{ thread['title'] }}</h3>
+          <div class="thread">
+            <p>
+              {{ thread['description'] }}
+            </p>
 
+            <p>
+              <a href="#" class="new_link new_perspective" data-thread="{{ thread['id'] }}">+ New Perspective</a>
+            </p>
+            <div class="perspectives">
 
+              {% for perspective in thread['perspectives'] %}
 
-            <p><a href="#" class="new_link new_thread">+ New Thread</a></p>
-            <div class="threads">
+                <h3 id="thread_{{ thread['id'] }}_perspective_{{ perspective['id'] }}">
+                  <em>Term:</em>
+                  {{ perspective['term'] }}</h3>
+                <div class="perspective">
+                  <p>
+                    <em>Interpretation:</em>
+                    {{ perspective['initial_interpretation'] }}</p>
 
-              {% for thread in threads %}
-              <h3 id="thread_{{ thread['doc_id'] }}">{{ thread['title'] }}</h3>
-              <div class="thread">
-                <p>
-                  {{ thread['description'] }}
-                </p>
+                  <p>
+                    <a href="#" class="new_link new_paraphrase" data-thread="1" data-perspective="{{ perspective['id'] }}">+ New Paraphrase</a>
+                  </p>
 
-                <p><a href="#" class="new_link new_perspective" data-thread="{{ thread['doc_id'] }}">+ New Perspective</a></p>
-                <div class="perspectives">
-
-                  {% for perspective in thread['perspectives'] %}
-
-                  <h3 id="thread_{{ thread['doc_id'] }}_perspective_{{ perspective['id'] }}"><em>Term:</em> {{ perspective['term'] }}</h3>
-                  <div class="perspective">
-                    <p><em>Interpretation:</em> {{ perspective['initial_interpretation'] }}</p>
-
-                    <p><a href="#" class="new_link new_paraphrase" data-thread="1" data-perspective="{{ perspective['id'] }}">+ New Paraphrase</a></p>
-
-                    <ol class="paraphrases">
-                      {% for paraphrase in perspective['paraphrases'] %}
-                      <li class="paraphrase" id="thread_{{ thread['doc_id'] }}_perspective_{{ perspective['id'] }}_paraphrase_{{ paraphrase['id'] }}">
+                  <ol class="paraphrases">
+                    {% for paraphrase in perspective['paraphrases'] %}
+                      <li class="paraphrase" id="thread_{{ thread['id'] }}_perspective_{{ perspective['id'] }}_paraphrase_{{ paraphrase['id'] }}">
                         <p class="paraphrase_content">{{ paraphrase['paraphrase'] }}</p>
                         <p class="rating">
                           {% if paraphrase['judgment'] %}
-                          {{ paraphrase['judgment'] }}
+                            {{ paraphrase['judgment'] }}
                           {% else %}
-                          No Rating Yet
+                            No Rating Yet
                           {% endif %}
                         </p>
                       </li>
-                      {% endfor %}
-                    </ol>
-                  </div>
-                  {% endfor %}
+                    {% endfor %}
+                  </ol>
                 </div>
-              </div>
               {% endfor %}
             </div>
-          </section>
-        </body>
-      </html>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </body>
+</html>
