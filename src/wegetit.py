@@ -64,12 +64,13 @@ def post_thread():
         error = 'Title is required.'
     if not thread_description:
         error = 'Description is required.'
+
     if error is not None:
-        return(error)
-    else:
-        thread_id = threads.insert(
-            {'title': thread_title, 'description': thread_description})
-        return redirect('/#thread_' + str(thread_id))
+        return error
+
+    thread_id = threads.insert(
+        {'title': thread_title, 'description': thread_description})
+    return redirect('/#thread_' + str(thread_id))
 
 
 @app.route('/threads/<int:thread_id>/perspectives', methods=['POST'])
@@ -86,13 +87,14 @@ def post_perspective(thread_id):
     error = None
     if not perspective_term:
         error = 'Term is required.'
-    if error is not None:
-        return(error)
-    else:
-        perspective_id = perspectives.insert({'thread_id': thread_id, 'term': perspective_term,
-                                              'initial_interpretation': initial_interpretation})
 
-        return redirect('/#thread_' + str(thread_id) + '_perspective_' + str(perspective_id))
+    if error is not None:
+        return error
+
+    perspective_id = perspectives.insert({'thread_id': thread_id, 'term': perspective_term,
+                                          'initial_interpretation': initial_interpretation})
+
+    return redirect('/#thread_' + str(thread_id) + '_perspective_' + str(perspective_id))
 
 
 @app.route('/threads/<int:thread_id>/perspectives/<int:perspective_id>/paraphrases', methods=['POST'])
@@ -109,10 +111,11 @@ def post_paraphrase(thread_id, perspective_id):
     error = None
     if not paraphrase:
         error = 'Paraphrase is required.'
-    if error is not None:
-        return(error)
-    else:
-        paraphrase_id = paraphrases.insert(
-            {'perspective_id': perspective_id, 'paraphrase': paraphrase})
 
-        return redirect('/#thread_' + str(thread_id) + '_perspective_' + str(perspective_id) + '_paraphrase_' + str(paraphrase_id))
+    if error is not None:
+        return error
+
+    paraphrase_id = paraphrases.insert(
+        {'perspective_id': perspective_id, 'paraphrase': paraphrase})
+
+    return redirect('/#thread_' + str(thread_id) + '_perspective_' + str(perspective_id) + '_paraphrase_' + str(paraphrase_id))
