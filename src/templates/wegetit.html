@@ -244,15 +244,26 @@ A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details
                     <a href="#" class="new_link new_paraphrase" data-thread="1" data-perspective="{{ perspective['id'] }}">+ New Paraphrase</a>
                   </p>
 
+                  <h4>Paraphrases</h4>
                   <ol class="paraphrases">
                     {% for paraphrase in perspective['paraphrases'] %}
                       <li class="paraphrase" id="thread_{{ thread['id'] }}_perspective_{{ perspective['id'] }}_paraphrase_{{ paraphrase['id'] }}">
                         <p class="paraphrase_content">{{ paraphrase['paraphrase'] }}</p>
                         <p class="rating">
                           {% if paraphrase['judgment'] %}
+                            Judgment:
                             {{ paraphrase['judgment'] }}
                           {% else %}
                             No Rating Yet
+                            {% if paraphrase['judgeable'] %}
+                              [[
+                              <a href="/threads/{{ thread['id'] }}/perspectives/{{ perspective['id'] }}/paraphrases/{{ paraphrase['id'] }}/they_get_it">They get it! :)</a>
+                              ||
+                              <a href="/threads/{{ thread['id'] }}/perspectives/{{ perspective['id'] }}/paraphrases/{{ paraphrase['id'] }}/they_dont_get_it">They don't get it. :(</a>
+                              ]]
+                            {% else %}
+                              (not yours)
+                            {% endif %}
                           {% endif %}
                         </p>
                       </li>

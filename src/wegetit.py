@@ -1,8 +1,9 @@
-from flask import Flask, flash, render_template, request, redirect, url_for
+from flask import Flask, flash, make_response, render_template, request, redirect, url_for
 import os
 import db
 from tinydb import TinyDB, Query
 import sys
+import uuid
 
 app = Flask(__name__)
 app.config.from_mapping(
@@ -17,6 +18,14 @@ ROOT_DIR = app.root_path
 
 @app.route('/')
 def root():
+    user_uuid = request.cookies.get('user_uuid')
+    generated_new_cookie = False
+    if not user_uuid:
+        user_uuid = str(uuid.uuid1())
+        generated_new_cookie = True
+        print('Generated a new user uuid.')
+    print('User uuid: ' + user_uuid)
+
     the_db = db.get_db()
     threads = []
     for thread_row in the_db.table('threads').all():
@@ -33,6 +42,7 @@ def root():
             perspective = {
                 'id': perspective_row.doc_id,
                 'term': perspective_row['term'],
+                'author': perspective_row['author'],
                 'initial_interpretation': perspective_row['initial_interpretation'],
                 'paraphrases': []
             }
@@ -42,16 +52,29 @@ def root():
                 paraphrase = {
                     'id': paraphrase_row.doc_id,
                     'paraphrase': paraphrase_row['paraphrase'],
-                    'judgment': paraphrase_row.get('judgment')
+                    'judgment': paraphrase_row.get('judgment'),
+                    'judgeable': user_uuid == perspective['author']
                 }
+                print('judgeable', user_uuid, perspective['author'])
 
                 perspective['paraphrases'].append(paraphrase)
 
-    return render_template('wegetit.html', threads=threads)
+    resp = make_response(render_template('wegetit.html', threads=threads))
+    if generated_new_cookie:
+        resp.set_cookie('user_uuid', user_uuid)
+    return resp
 
 
 @app.route('/threads', methods=['GET', 'POST'])
 def post_thread():
+    user_uuid = request.cookies.get('user_uuid')
+    generated_new_cookie = False
+    if not user_uuid:
+        user_uuid = str(uuid.uuid1())
+        generated_new_cookie = True
+        print('Generated a new user uuid.')
+    print('User uuid: ' + user_uuid)
+
     # insert new thread into DB, making a new id
     the_db = db.get_db()
     threads = the_db.table('threads')
@@ -68,13 +91,27 @@ def post_thread():
     if error is not None:
         return error
 
-    thread_id = threads.insert(
-        {'title': thread_title, 'description': thread_description})
-    return redirect('/#thread_' + str(thread_id))
+    thread_id = threads.insert({
+        'title': thread_title,
+        'description': thread_description
+    })
+
+    resp = make_response(redirect('/#thread_' + str(thread_id)))
+    if generated_new_cookie:
+        resp.set_cookie('user_uuid', user_uuid)
+    return resp
 
 
 @app.route('/threads/<int:thread_id>/perspectives', methods=['POST'])
 def post_perspective(thread_id):
+    user_uuid = request.cookies.get('user_uuid')
+    generated_new_cookie = False
+    if not user_uuid:
+        user_uuid = str(uuid.uuid1())
+        generated_new_cookie = True
+        print('Generated a new user uuid.')
+    print('User uuid: ' + user_uuid)
+
     # insert new perspective into DB, making a new id
     the_db = db.get_db()
     threads = the_db.table('threads')
@@ -91,14 +128,30 @@ def post_perspective(thread_id):
     if error is not None:
         return error
 
-    perspective_id = perspectives.insert({'thread_id': thread_id, 'term': perspective_term,
-                                          'initial_interpretation': initial_interpretation})
+    perspective_id = perspectives.insert({
+        'thread_id': thread_id,
+        'term': perspective_term,
+        'author': user_uuid,
+        'initial_interpretation': initial_interpretation
+    })
 
-    return redirect('/#thread_' + str(thread_id) + '_perspective_' + str(perspective_id))
+    resp = make_response(
+        redirect('/#thread_' + str(thread_id) + '_perspective_' + str(perspective_id)))
+    if generated_new_cookie:
+        resp.set_cookie('user_uuid', user_uuid)
+    return resp
 
 
 @app.route('/threads/<int:thread_id>/perspectives/<int:perspective_id>/paraphrases', methods=['POST'])
 def post_paraphrase(thread_id, perspective_id):
+    user_uuid = request.cookies.get('user_uuid')
+    generated_new_cookie = False
+    if not user_uuid:
+        user_uuid = str(uuid.uuid1())
+        generated_new_cookie = True
+        print('Generated a new user uuid.')
+    print('User uuid: ' + user_uuid)
+
     # insert a new paraphrase into the DB, making a new id, and redirect to
 
     the_db = db.get_db()
@@ -115,7 +168,55 @@ def post_paraphrase(thread_id, perspective_id):
     if error is not None:
         return error
 
-    paraphrase_id = paraphrases.insert(
-        {'perspective_id': perspective_id, 'paraphrase': paraphrase})
+    paraphrase_id = paraphrases.insert({
+        'perspective_id': perspective_id,
+        'paraphrase': paraphrase
+    })
 
-    return redirect('/#thread_' + str(thread_id) + '_perspective_' + str(perspective_id) + '_paraphrase_' + str(paraphrase_id))
+    resp = make_response(redirect('/#thread_' + str(thread_id) + '_perspective_' +
+                                  str(perspective_id) + '_paraphrase_' + str(paraphrase_id)))
+    if generated_new_cookie:
+        resp.set_cookie('user_uuid', user_uuid)
+    return resp
+
+
+@app.route('/threads/<int:thread_id>/perspectives/<int:perspective_id>/paraphrases/<int:paraphrase_id>/they_get_it', methods=['GET'])
+def get_they_get_it(thread_id, perspective_id, paraphrase_id):
+    user_uuid = request.cookies.get('user_uuid')
+    if user_uuid:
+        print('User uuid: ' + user_uuid)
+
+        # insert a new paraphrase into the DB, making a new id, and redirect to
+
+        the_db = db.get_db()
+        threads = the_db.table('threads')
+        perspectives = the_db.table('perspectives')
+        paraphrases = the_db.table('paraphrases')
+
+        paraphrases.update({'judgment': 'They get it! :)'},
+                           doc_ids=[paraphrase_id])
+
+    resp = make_response(redirect('/#thread_' + str(thread_id) + '_perspective_' +
+                                  str(perspective_id) + '_paraphrase_' + str(paraphrase_id)))
+    return resp
+
+
+@app.route('/threads/<int:thread_id>/perspectives/<int:perspective_id>/paraphrases/<int:paraphrase_id>/they_dont_get_it', methods=['GET'])
+def get_they_dont_get_it(thread_id, perspective_id, paraphrase_id):
+    user_uuid = request.cookies.get('user_uuid')
+    if user_uuid:
+        print('User uuid: ' + user_uuid)
+
+        # insert a new paraphrase into the DB, making a new id, and redirect to
+
+        the_db = db.get_db()
+        threads = the_db.table('threads')
+        perspectives = the_db.table('perspectives')
+        paraphrases = the_db.table('paraphrases')
+
+        paraphrases.update({'judgment': 'They don\'t get it. :('},
+                           doc_ids=[paraphrase_id])
+
+    resp = make_response(redirect('/#thread_' + str(thread_id) + '_perspective_' +
+                                  str(perspective_id) + '_paraphrase_' + str(paraphrase_id)))
+    return resp
