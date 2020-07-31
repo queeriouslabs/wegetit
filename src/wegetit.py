@@ -23,8 +23,6 @@ def root():
     if not user_uuid:
         user_uuid = str(uuid.uuid1())
         generated_new_cookie = True
-        print('Generated a new user uuid.')
-    print('User uuid: ' + user_uuid)
 
     the_db = db.get_db()
     threads = []
@@ -55,7 +53,6 @@ def root():
                     'judgment': paraphrase_row.get('judgment'),
                     'judgeable': user_uuid == perspective['author']
                 }
-                print('judgeable', user_uuid, perspective['author'])
 
                 perspective['paraphrases'].append(paraphrase)
 
@@ -72,8 +69,6 @@ def post_thread():
     if not user_uuid:
         user_uuid = str(uuid.uuid1())
         generated_new_cookie = True
-        print('Generated a new user uuid.')
-    print('User uuid: ' + user_uuid)
 
     # insert new thread into DB, making a new id
     the_db = db.get_db()
@@ -109,8 +104,6 @@ def post_perspective(thread_id):
     if not user_uuid:
         user_uuid = str(uuid.uuid1())
         generated_new_cookie = True
-        print('Generated a new user uuid.')
-    print('User uuid: ' + user_uuid)
 
     # insert new perspective into DB, making a new id
     the_db = db.get_db()
@@ -149,8 +142,6 @@ def post_paraphrase(thread_id, perspective_id):
     if not user_uuid:
         user_uuid = str(uuid.uuid1())
         generated_new_cookie = True
-        print('Generated a new user uuid.')
-    print('User uuid: ' + user_uuid)
 
     # insert a new paraphrase into the DB, making a new id, and redirect to
 
@@ -184,8 +175,6 @@ def post_paraphrase(thread_id, perspective_id):
 def get_they_get_it(thread_id, perspective_id, paraphrase_id):
     user_uuid = request.cookies.get('user_uuid')
     if user_uuid:
-        print('User uuid: ' + user_uuid)
-
         # insert a new paraphrase into the DB, making a new id, and redirect to
 
         the_db = db.get_db()
@@ -205,8 +194,6 @@ def get_they_get_it(thread_id, perspective_id, paraphrase_id):
 def get_they_dont_get_it(thread_id, perspective_id, paraphrase_id):
     user_uuid = request.cookies.get('user_uuid')
     if user_uuid:
-        print('User uuid: ' + user_uuid)
-
         # insert a new paraphrase into the DB, making a new id, and redirect to
 
         the_db = db.get_db()
