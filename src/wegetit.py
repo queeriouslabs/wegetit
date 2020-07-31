@@ -1,6 +1,5 @@
 from flask import Flask, flash, make_response, render_template, request, redirect, url_for
 import os
-import db
 from tinydb import TinyDB, Query
 import sys
 import uuid
@@ -24,7 +23,7 @@ def root():
         user_uuid = str(uuid.uuid1())
         generated_new_cookie = True
 
-    the_db = db.get_db()
+    the_db = TinyDB('db.json')
     threads = []
     for thread_row in the_db.table('threads').all():
 
@@ -71,7 +70,7 @@ def post_thread():
         generated_new_cookie = True
 
     # insert new thread into DB, making a new id
-    the_db = db.get_db()
+    the_db = TinyDB('db.json')
     threads = the_db.table('threads')
 
     thread_title = request.form.get('thread_title')
@@ -106,7 +105,7 @@ def post_perspective(thread_id):
         generated_new_cookie = True
 
     # insert new perspective into DB, making a new id
-    the_db = db.get_db()
+    the_db = TinyDB('db.json')
     threads = the_db.table('threads')
     perspectives = the_db.table('perspectives')
 
@@ -145,7 +144,7 @@ def post_paraphrase(thread_id, perspective_id):
 
     # insert a new paraphrase into the DB, making a new id, and redirect to
 
-    the_db = db.get_db()
+    the_db = TinyDB('db.json')
     threads = the_db.table('threads')
     perspectives = the_db.table('perspectives')
     paraphrases = the_db.table('paraphrases')
@@ -177,7 +176,7 @@ def get_they_get_it(thread_id, perspective_id, paraphrase_id):
     if user_uuid:
         # insert a new paraphrase into the DB, making a new id, and redirect to
 
-        the_db = db.get_db()
+        the_db = TinyDB('db.json')
         threads = the_db.table('threads')
         perspectives = the_db.table('perspectives')
         paraphrases = the_db.table('paraphrases')
@@ -196,7 +195,7 @@ def get_they_dont_get_it(thread_id, perspective_id, paraphrase_id):
     if user_uuid:
         # insert a new paraphrase into the DB, making a new id, and redirect to
 
-        the_db = db.get_db()
+        the_db = TinyDB('db.json')
         threads = the_db.table('threads')
         perspectives = the_db.table('perspectives')
         paraphrases = the_db.table('paraphrases')
