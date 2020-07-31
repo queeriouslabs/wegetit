@@ -1,6 +1,20 @@
-<!-- WeGetIt - A tool for achieving shared understanding Copyright (C) 2020 Queerious Labs This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free
-Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>. -->
+<!--
+WeGetIt - A tool for achieving shared understanding
+Copyright (C) 2020 Queerious Labs
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
 
 <!DOCTYPE html>
 <html>
@@ -179,12 +193,12 @@ A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details
       <div id="new_thread_dialog" title="Create new thread">
         <form id="new_thread_form" method="POST">
           <p>
-            <label for="thread_title">Thread Title</label>
+            <label for="thread_title">Thread Title</label><br/><br/>
             <input type="text" name="thread_title" id="thread_title"/>
           </p>
 
           <p>
-            <label for="thread_description">Thread Description</label><br/>
+            <label for="thread_description">Thread Description</label><br/><br/>
             <textarea name="thread_description" id="thread_description" rows="6" cols="50"></textarea>
           </p>
         </form>
@@ -193,12 +207,12 @@ A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details
       <div id="new_perspective_dialog" title="Create new perspective">
         <form id="new_perspective_form" method="POST">
           <p>
-            <label for="perspective_term">What term would you like to provide an interpretation of?</label>
+            <label for="perspective_term">What term would you like to give an interpretation for?</label><br/><br/>
             <input type="text" name="perspective_term" id="perspective_term"/>
           </p>
 
           <p>
-            <label for="initial_interpretation">How do you interpret the meaning of this term?</label><br/>
+            <label for="initial_interpretation">How do you interpret the meaning of this term?</label><br/><br/>
             <textarea id="initial_interpretation" name="initial_interpretation" rows="6" cols="50"></textarea>
           </p>
         </form>
@@ -207,7 +221,7 @@ A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details
       <div id="new_paraphrase_dialog" title="Create new paraphrase">
         <form id="new_paraphrase_form" method="POST">
           <p>
-            <label for="paraphrase">How would you paraphrase the original author's interpretation of this term?</label><br/>
+            <label for="paraphrase">How would you paraphrase the original author's interpretation of this term?</label><br/><br/>
             <textarea id="paraphrase" name="paraphrase" rows="6" cols="50"></textarea>
           </p>
         </form>
@@ -218,6 +232,9 @@ A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details
       </p>
       <div class="threads">
 
+        {% if not threads %}
+        No threads yet.
+        {% endif %}
         {% for thread in threads %}
           <h3 id="thread_{{ thread['id'] }}">{{ thread['title'] }}</h3>
           <div class="thread">
@@ -245,6 +262,7 @@ A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details
                   </p>
 
                   <h4>Paraphrases</h4>
+                  {% if perspective['paraphrases'] %}
                   <ol class="paraphrases">
                     {% for paraphrase in perspective['paraphrases'] %}
                       <li class="paraphrase" id="thread_{{ thread['id'] }}_perspective_{{ perspective['id'] }}_paraphrase_{{ paraphrase['id'] }}">
@@ -269,6 +287,9 @@ A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details
                       </li>
                     {% endfor %}
                   </ol>
+                  {% else %}
+                  <p>No paraphrases yet.</p>
+                  {% endif %}
                 </div>
               {% endfor %}
             </div>

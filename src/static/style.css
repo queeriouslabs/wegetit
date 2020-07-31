@@ -49,6 +49,10 @@ code {
   padding-left: 15px;
 }
 
+.ui-widget, .ui-widget textarea, .ui-widget input, .ui-widget button {
+  font-family: monospace;
+}
+
 .ui-accordion {
   padding-left: 0;
 }
