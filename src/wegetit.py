@@ -14,12 +14,6 @@ app.config['TESTING'] = True
 
 ROOT_DIR = app.root_path
 
-if len(sys.argv) != 2:
-    print('Please provide a database file.')
-    exit()
-
-DB_FILE = sys.argv[1]
-
 
 @app.route('/')
 def root():
@@ -214,5 +208,12 @@ def get_they_dont_get_it(thread_id, perspective_id, paraphrase_id):
     return resp
 
 
-if __name__ == '__main__':
+def main(db_file):
+    global DB_FILE
+
+    if not db_file:
+        print('Please provide a database file.')
+        exit()
+
+    DB_FILE = db_file
     app.run()
