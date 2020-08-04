@@ -216,4 +216,4 @@ def main(db_file):
         exit()
 
     DB_FILE = db_file
-    app.run()
+    return app
