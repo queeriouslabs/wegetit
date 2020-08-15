@@ -155,8 +155,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
       </p>
 
       <p>
-        Each paraphrase can be rated by the original author of the perspective that's being paraphrased. The ratings are either "Not Quite", which indicates that the paraphrase isn't exactly what the original author meant, or "We Get It!", which means that
-        the original author things that the paraphrase is a good paraphrase of their meaning. These ratings will show up next to the paraphrases once they are given by the original author.
+        Each paraphrase can be rated by the original author of the perspective that's being paraphrased. The judgments are either "Not Quite", which indicates that the paraphrase isn't exactly what the original author meant, or "We Get It!", which means that
+        the original author things that the paraphrase is a good paraphrase of their meaning. These judgments will show up next to the paraphrases once they are given by the original author.
       </p>
 
       <p>
@@ -267,12 +267,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
                     {% for paraphrase in perspective['paraphrases'] %}
                       <li class="paraphrase" id="thread_{{ thread['id'] }}_perspective_{{ perspective['id'] }}_paraphrase_{{ paraphrase['id'] }}">
                         <p class="paraphrase_content">{{ paraphrase['paraphrase'] }}</p>
-                        <p class="rating">
+                        <p class="judgment">
                           {% if paraphrase['judgment'] %}
                             Judgment:
                             {{ paraphrase['judgment'] }}
                           {% else %}
-                            No Rating Yet
+                            No Judgments Yet
                             {% if paraphrase['judgeable'] %}
                               [[
                               <a href="/threads/{{ thread['id'] }}/perspectives/{{ perspective['id'] }}/paraphrases/{{ paraphrase['id'] }}/they_get_it">They get it! :)</a>
