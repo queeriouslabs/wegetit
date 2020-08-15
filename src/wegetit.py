@@ -14,6 +14,8 @@ app.config['TESTING'] = True
 
 ROOT_DIR = app.root_path
 
+MAX_TEXT_LENGTH = 1000
+
 
 @app.route('/')
 def root():
@@ -86,8 +88,8 @@ def post_thread():
         return error
 
     thread_id = threads.insert({
-        'title': thread_title,
-        'description': thread_description
+        'title': thread_title[:MAX_TEXT_LENGTH],
+        'description': thread_description[:MAX_TEXT_LENGTH]
     })
 
     resp = make_response(redirect('/#thread_' + str(thread_id)))
@@ -122,9 +124,9 @@ def post_perspective(thread_id):
 
     perspective_id = perspectives.insert({
         'thread_id': thread_id,
-        'term': perspective_term,
+        'term': perspective_term[:MAX_TEXT_LENGTH],
         'author': user_uuid,
-        'initial_interpretation': initial_interpretation
+        'initial_interpretation': initial_interpretation[:MAX_TEXT_LENGTH]
     })
 
     resp = make_response(
@@ -160,7 +162,7 @@ def post_paraphrase(thread_id, perspective_id):
 
     paraphrase_id = paraphrases.insert({
         'perspective_id': perspective_id,
-        'paraphrase': paraphrase
+        'paraphrase': paraphrase[:MAX_TEXT_LENGTH]
     })
 
     resp = make_response(redirect('/#thread_' + str(thread_id) + '_perspective_' +
