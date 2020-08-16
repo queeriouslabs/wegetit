@@ -5,12 +5,8 @@ import sys
 import uuid
 
 app = Flask(__name__)
-app.config.from_mapping(
-    SECRET_KEY='dev',
-    DATABASE=os.path.join(app.instance_path, 'wegetit.tinydb'),
-)
-app.config['DEBUG'] = True
-app.config['TESTING'] = True
+# app.config['DEBUG'] = True
+# app.config['TESTING'] = True
 
 ROOT_DIR = app.root_path
 
