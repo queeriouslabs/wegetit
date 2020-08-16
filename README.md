@@ -2,6 +2,19 @@
 
 An implementation of WeGetIt from Karl Schroeder's short story Degrees of Freedom
 
+## deploying
+
+The current setup is designed to use gunicorn as its server. You can run it from
+bash with the command
+
+```
+$ gunicorn -w 4 -b $ADDRESS:$PORT "wegetit:main($DBFILE)"
+```
+
+You must specify a path for `$DBFILE`, as this is where the program will store
+the database. Putting it in somewhere like `/tmp/wegetit/db.json` or
+`/var/wegetit/db.json` is usually a good idea.
+
 ## terminology
 
 For lack of better terms, "definitions" describes the term-definition-paraphrase portions of WeGetIt, while "conversations" describes the broad collection of definitions.
